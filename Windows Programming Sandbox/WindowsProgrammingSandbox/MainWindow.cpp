@@ -49,7 +49,7 @@ LRESULT CALLBACK window2Procedure(HWND window2, UINT message, WPARAM wParam, LPA
 		PostQuitMessage(0);
 		return 0;
 	}
-	return DefWindowProc(window1, message, wParam, lParam); // invoke the default window procedure for standard window functionality
+	return DefWindowProc(window2, message, wParam, lParam); // invoke the default window procedure for standard window functionality
 }
 
 //Window procedure for the third window
@@ -71,7 +71,7 @@ LRESULT CALLBACK window3Procedure(HWND window3, UINT message, WPARAM wParam, LPA
 		PostQuitMessage(0);
 		return 0;
 	}
-	return DefWindowProc(window1, message, wParam, lParam); // invoke the default window procedure for standard window functionality
+	return DefWindowProc(window3, message, wParam, lParam); // invoke the default window procedure for standard window functionality
 }
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR cmdLine, int showCmd) // enter the program loop
@@ -79,7 +79,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR cmdLine, i
 	//Save handle to application instance
 	appInstance = hInstance;
 
-	//fill out a WNDCLASS structure for the first window
+	//fill out a WNDCLASS structure for the first window...
 	WNDCLASS wc1;
 	wc1.style = CS_HREDRAW| CS_VREDRAW;
 	wc1.lpfnWndProc = window1Procedure;
@@ -92,7 +92,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR cmdLine, i
 	wc1.lpszMenuName = 0;
 	wc1.lpszClassName = L"window1Class";
 
-	//for the second window
+	//for the second window...
 	WNDCLASS wc2;
 	wc2.style = CS_HREDRAW | CS_VREDRAW;
 	wc2.lpfnWndProc = window2Procedure;
@@ -105,23 +105,44 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR cmdLine, i
 	wc2.lpszMenuName = 0;
 	wc2.lpszClassName = L"window2Class";
 
+	//and fo the third window.
+	WNDCLASS wc3;
+	wc3.style = CS_HREDRAW | CS_VREDRAW;
+	wc3.lpfnWndProc = window3Procedure;
+	wc3.cbClsExtra = 0;
+	wc3.cbWndExtra = 0;
+	wc3.hInstance = appInstance;
+	wc3.hIcon = LoadIcon(0, IDI_APPLICATION);
+	wc3.hCursor = LoadCursor(0, IDC_ARROW);
+	wc3.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	wc3.lpszMenuName = 0;
+	wc3.lpszClassName = L"window3Class";
+
 	//Register the class with Windows so it knows that the hell is going on... Because Windows is stupid... :)
 	RegisterClass(&wc1);
+	RegisterClass(&wc2);
+	RegisterClass(&wc3);
 
 	//Create the Window with this stupid long function, and assign the result to the mainWindow handle.
-	window1 = CreateWindow(L"mainWindowClass", L"My Window", WS_OVERLAPPEDWINDOW|WS_HSCROLL|WS_VSCROLL, 240, 240, 720, 720, 0, 0, appInstance, 0);
+	window1 = CreateWindow(L"window1Class", L"My First Window ", WS_OVERLAPPEDWINDOW, 120, 120, 480, 720, 0, 0, appInstance, 0);
+	window2 = CreateWindow(L"window2Class", L"My Second Window ", WS_OVERLAPPEDWINDOW, 120 + 480, 120, 480, 720, 0, 0, appInstance, 0);
+	window3 = CreateWindow(L"window3Class", L"My Third Window ", WS_OVERLAPPEDWINDOW, 120 + 480*2, 120, 480, 720, 0, 0, appInstance, 0);
 
 	//Throw an error and create a messagebox to ask the user if they want to retry
 	//TODO:: implement retry functionality
-	if (window1 == 0)
+	if (window3 == 0)
 	{
 		MessageBox(0, L"CreateWindow - Failed", 0, MB_RETRYCANCEL);
 		return false;
 	}
 
 	//Show and update the window
-	ShowWindow(mainWindow, showCmd);
-	UpdateWindow(mainWindow);
+	ShowWindow(window1, showCmd);
+	UpdateWindow(window1);
+	ShowWindow(window2, showCmd);
+	UpdateWindow(window2);
+	ShowWindow(window3, showCmd);
+	UpdateWindow(window3);
 
 	MSG msg;
 	ZeroMemory(&msg, sizeof(msg));
@@ -131,6 +152,4 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR cmdLine, i
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
-
-
 }
