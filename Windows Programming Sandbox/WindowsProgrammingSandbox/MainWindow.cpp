@@ -105,7 +105,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR cmdLine, i
 	wc2.lpszMenuName = 0;
 	wc2.lpszClassName = L"window2Class";
 
-	//and fo the third window.
+	//and for the third window.
 	WNDCLASS wc3;
 	wc3.style = CS_HREDRAW | CS_VREDRAW;
 	wc3.lpfnWndProc = window3Procedure;
