@@ -6,6 +6,18 @@ HWND window2 = 0;
 HWND window3 = 0;
 HINSTANCE appInstance = 0;
 
+//Declaration for a brush with the color blue
+LOGBRUSH bb{ BS_SOLID, RGB(0, 0, 255) };
+HBRUSH blueBrush = CreateBrushIndirect(&bb);
+
+//Declaration for a brush with the color green
+LOGBRUSH gb{ BS_SOLID, RGB(0, 255, 0) };
+HBRUSH greenBrush = CreateBrushIndirect(&gb);
+
+//Declaration for a brush with the color red
+LOGBRUSH rb{ BS_SOLID, RGB(255, 0, 0) };
+HBRUSH redBrush = CreateBrushIndirect(&rb);
+
 int quit;
 
 //Window procedure for the first window
@@ -88,7 +100,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR cmdLine, i
 	wc1.hInstance = appInstance;
 	wc1.hIcon = LoadIcon(0, IDI_APPLICATION);
 	wc1.hCursor = LoadCursor(0, IDC_ARROW);
-	wc1.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	wc1.hbrBackground = blueBrush;//blueBrush is defined in variables at the top of the file
 	wc1.lpszMenuName = 0;
 	wc1.lpszClassName = L"window1Class";
 
@@ -101,7 +113,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR cmdLine, i
 	wc2.hInstance = appInstance;
 	wc2.hIcon = LoadIcon(0, IDI_APPLICATION);
 	wc2.hCursor = LoadCursor(0, IDC_ARROW);
-	wc2.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	wc2.hbrBackground = greenBrush; //greenBrush is defined in variables at the top of the file
 	wc2.lpszMenuName = 0;
 	wc2.lpszClassName = L"window2Class";
 
@@ -114,7 +126,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR cmdLine, i
 	wc3.hInstance = appInstance;
 	wc3.hIcon = LoadIcon(0, IDI_APPLICATION);
 	wc3.hCursor = LoadCursor(0, IDC_ARROW);
-	wc3.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	wc3.hbrBackground = redBrush; //redBrush is defined in variables at the top of the file
 	wc3.lpszMenuName = 0;
 	wc3.lpszClassName = L"window3Class";
 
