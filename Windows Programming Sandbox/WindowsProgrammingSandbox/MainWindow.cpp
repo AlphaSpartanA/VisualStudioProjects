@@ -1,21 +1,59 @@
 #include <Windows.h>
+#include "string.h"
+#include <vector>
 
-//stores handles to the main window and application instance globally
+using namespace std;
+//===============================================================================================
+// Global variables.
 HWND mainWindow = 0;
 HINSTANCE appInstance = 0;
+
+struct TextObj
+{
+	wstring s = L"";
+	POINT p;
+};
+
+vector<TextObj> gTextObjs;
 
 //Define the main window procedure
 LRESULT CALLBACK windowProcedure(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam) 
 {
+	HDC hdc = 0;
+	PAINTSTRUCT ps;
+
+	TextObj to;
+
 	switch (message)
 	{
 	case WM_LBUTTONDOWN: // handle left mouse button click
-		MessageBox(0, L"WM_LBUTTON DOWN message", L"Msg", MB_OK);
+
+		to.s = L"Hello, World!";
+
+		to.p.x = LOWORD(lParam);
+		to.p.y = HIWORD(lParam);
+
+		gTextObjs.push_back(to);
+
+		InvalidateRect(windowHandle, 0, false);
 		return 0;
+
+	case WM_PAINT:
+		hdc = BeginPaint(windowHandle, &ps);
+
+		for (int i = 0; i << gTextObjs.size(); ++i)
+		{
+			TextOut(hdc, gTextObjs[i].p.x, gTextObjs[i].p.y, gTextObjs[i].s.c_str(), gTextObjs[i].s.size());
+		}
+		
+		EndPaint(windowHandle, &ps);
+		return 0;
+
 	case WM_KEYDOWN: // handle the escape key
 		if (wParam == VK_ESCAPE)
 			DestroyWindow(windowHandle);
 		return 0;
+
 	case WM_DESTROY: // handle exiting the application
 		PostQuitMessage(0);
 		return 0;
@@ -68,5 +106,5 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR cmdLine, i
 		DispatchMessage(&msg);
 	}
 
-
+	return (int)msg.wParam;
 }
