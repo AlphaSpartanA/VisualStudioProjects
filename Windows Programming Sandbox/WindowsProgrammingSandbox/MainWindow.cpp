@@ -1,4 +1,5 @@
 #include <Windows.h>
+#include "resource.h"
 
 //stores handles to the three windows and application instance globally
 HWND window1 = 0;
@@ -36,7 +37,9 @@ LRESULT CALLBACK window1Procedure(HWND window1, UINT message, WPARAM wParam, LPA
 		else//Otherwise, continue the loop.
 			return 0;
 	case WM_DESTROY: // handle exiting the application
+		if (!(window2 && window3))
 		PostQuitMessage(0);
+		else
 		return 0;
 	}
 	return DefWindowProc(window1, message, wParam, lParam); // invoke the default window procedure for standard window functionality
@@ -58,8 +61,10 @@ LRESULT CALLBACK window2Procedure(HWND window2, UINT message, WPARAM wParam, LPA
 		else//Otherwise, continue the loop.
 			return 0;
 	case WM_DESTROY: // handle exiting the application
-		PostQuitMessage(0);
-		return 0;
+		if (!(window1 && window3))
+			PostQuitMessage(0);
+		else
+			return 0;
 	}
 	return DefWindowProc(window2, message, wParam, lParam); // invoke the default window procedure for standard window functionality
 }
@@ -80,8 +85,10 @@ LRESULT CALLBACK window3Procedure(HWND window3, UINT message, WPARAM wParam, LPA
 		else//Otherwise, continue the loop.
 			return 0;
 	case WM_DESTROY: // handle exiting the application
-		PostQuitMessage(0);
-		return 0;
+		if (!(window1 && window2))
+			PostQuitMessage(0);
+		else
+			return 0;
 	}
 	return DefWindowProc(window3, message, wParam, lParam); // invoke the default window procedure for standard window functionality
 }
@@ -98,7 +105,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR cmdLine, i
 	wc1.cbClsExtra = 0;
 	wc1.cbWndExtra = 0;
 	wc1.hInstance = appInstance;
-	wc1.hIcon = LoadIcon(0, IDI_APPLICATION);
+	wc1.hIcon = LoadIcon(appInstance, MAKEINTRESOURCE(IDI_ICON1));
 	wc1.hCursor = LoadCursor(0, IDC_ARROW);
 	wc1.hbrBackground = blueBrush;//blueBrush is defined in variables at the top of the file
 	wc1.lpszMenuName = 0;
