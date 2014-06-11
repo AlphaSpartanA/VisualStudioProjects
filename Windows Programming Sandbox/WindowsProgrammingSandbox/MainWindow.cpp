@@ -9,14 +9,8 @@ HINSTANCE appInstance = 0;
 HDC hdc;
 PAINTSTRUCT ps;
 
-struct Line
-{
-	POINT p0;
-	POINT P1;
-};
-
-vector<Line> gLines;
-Line gLine;
+vector<RECT> gRects;
+RECT gRect;
 
 bool gMouseDown = false;
 
@@ -29,16 +23,16 @@ LRESULT CALLBACK windowProcedure(HWND windowHandle, UINT message, WPARAM wParam,
 		SetCapture(windowHandle);
 		gMouseDown = true;
 
-		gLine.p0.x = LOWORD(lParam);
-		gLine.p0.y = HIWORD(lParam);
+		gRect.left = LOWORD(lParam);
+		gRect.top = HIWORD(lParam);
 
 		return 0;
 
 	case WM_MOUSEMOVE:
 		if (gMouseDown)
 		{
-			gLine.P1.x = LOWORD(lParam);
-			gLine.P1.y = HIWORD(lParam);
+			gRect.right = LOWORD(lParam);
+			gRect.bottom = HIWORD(lParam);
 			InvalidateRect(windowHandle, 0, true);
 		}
 		return 0;
@@ -47,10 +41,10 @@ LRESULT CALLBACK windowProcedure(HWND windowHandle, UINT message, WPARAM wParam,
 		ReleaseCapture();
 		gMouseDown = false;
 
-		gLine.P1.x = LOWORD(lParam);
-		gLine.P1.y = HIWORD(lParam);
+		gRect.right = LOWORD(lParam);
+		gRect.bottom = HIWORD(lParam);
 
-		gLines.push_back(gLine);
+		gRects.push_back(gRect);
 		InvalidateRect(windowHandle, 0, true);
 
 		return 0;
@@ -60,14 +54,12 @@ LRESULT CALLBACK windowProcedure(HWND windowHandle, UINT message, WPARAM wParam,
 
 		if (gMouseDown)
 		{
-			MoveToEx(hdc, gLine.p0.x, gLine.p0.y, 0);
-			LineTo(hdc, gLine.P1.x, gLine.P1.y);
+			Rectangle(hdc, gRect.left, gRect.top, gRect.right, gRect.bottom);
 		}
 
-		for (int i = 0; i < gLines.size(); ++i)
+		for (int i = 0; i < gRects.size(); ++i)
 		{
-			MoveToEx(hdc, gLines[i].p0.x, gLines[i].p0.y, 0);
-			LineTo(hdc, gLines[i].P1.x, gLines[i].P1.y);
+			Rectangle(hdc, gRects[i].left, gRects[i].top, gRects[i].right, gRects[i].bottom);
 		}
 		EndPaint(windowHandle, &ps);
 		return 0;
@@ -126,5 +118,5 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR cmdLine, i
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
-	
+	return (int)msg.wParam;
 }
