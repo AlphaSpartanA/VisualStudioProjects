@@ -4,11 +4,27 @@
 HWND mainWindow = 0;
 HINSTANCE appInstance = 0;
 
+HBITMAP ghBitMap = 0;
+
 //Define the main window procedure
 LRESULT CALLBACK windowProcedure(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam) 
 {
+	HDC hdc = 0;
+	HDC bmHDC = 0;
+	PAINTSTRUCT ps;
+
+	BITMAP bitmap = { 0 };
+
+	static int bmWidth = 0;
+	static int bmHeight = 0;
+
+	HBITMAP oldBM = 0;
+
+
 	switch (message)
 	{
+	case WM_CREATE:
+		ghBitMap = LoadBitmap(appInstance, MAKEINTRESOURCE())
 	case WM_LBUTTONDOWN: // handle left mouse button click
 		MessageBox(0, L"WM_LBUTTON DOWN message", L"Msg", MB_OK);
 		return 0;
