@@ -1,4 +1,8 @@
 #include <Windows.h>
+#include <vector>
+#include <string>
+#include "resource.h"
+using namespace std;
 
 //stores handles to the main window and application instance globally
 HWND mainWindow = 0;
@@ -24,7 +28,21 @@ LRESULT CALLBACK windowProcedure(HWND windowHandle, UINT message, WPARAM wParam,
 	switch (message)
 	{
 	case WM_CREATE:
-		ghBitMap = LoadBitmap(appInstance, MAKEINTRESOURCE())
+		ghBitMap = LoadBitmap(appInstance, MAKEINTRESOURCE(IDB_BITMAP1));
+
+		GetObject(ghBitMap, sizeof(BITMAP), &bitmap);
+
+		bmWidth = bitmap.bmWidth;
+		bmHeight = bitmap.bmHeight;
+
+		return 0;
+	case WM_PAINT:
+		bmHDC = CreateCompatibleDC(hdc);
+
+		oldBM = (HBITMAP)SelectObject(bmHDC, ghBitMap);
+
+
+
 	case WM_LBUTTONDOWN: // handle left mouse button click
 		MessageBox(0, L"WM_LBUTTON DOWN message", L"Msg", MB_OK);
 		return 0;
