@@ -1,6 +1,7 @@
 #include <Windows.h>
 #include <vector>
 #include <string>
+#include <iostream>
 #include "resource.h"
 using namespace std;
 
@@ -33,16 +34,34 @@ LRESULT CALLBACK windowProcedure(HWND windowHandle, UINT message, WPARAM wParam,
 		GetObject(ghBitMap, sizeof(BITMAP), &bitmap);
 
 		bmWidth = bitmap.bmWidth;
+		cout << bitmap.bmWidth;
 		bmHeight = bitmap.bmHeight;
 
 		return 0;
 	case WM_PAINT:
+		hdc = BeginPaint(windowHandle, &ps);
+
 		bmHDC = CreateCompatibleDC(hdc);
 
 		oldBM = (HBITMAP)SelectObject(bmHDC, ghBitMap);
 
+		BitBlt(
+			hdc,
+			0,
+			0,
+			bmWidth,
+			bmHeight,
+			bmHDC,
+			0,
+			0,
+			SRCCOPY);
 
+		SelectObject(bmHDC, oldBM);
 
+		DeleteDC(bmHDC);
+
+		EndPaint(windowHandle, &ps);
+		return 0;
 	case WM_LBUTTONDOWN: // handle left mouse button click
 		MessageBox(0, L"WM_LBUTTON DOWN message", L"Msg", MB_OK);
 		return 0;
@@ -51,6 +70,7 @@ LRESULT CALLBACK windowProcedure(HWND windowHandle, UINT message, WPARAM wParam,
 			DestroyWindow(windowHandle);
 		return 0;
 	case WM_DESTROY: // handle exiting the application
+		DeleteObject(ghBitMap);
 		PostQuitMessage(0);
 		return 0;
 	}
@@ -101,6 +121,5 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR cmdLine, i
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
-
-
+	return (int)msg.wParam;
 }
