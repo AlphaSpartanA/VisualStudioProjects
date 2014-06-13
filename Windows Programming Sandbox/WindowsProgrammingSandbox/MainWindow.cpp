@@ -164,4 +164,5 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR cmdLine, i
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
+	return (int)msg.wParam;
 }
