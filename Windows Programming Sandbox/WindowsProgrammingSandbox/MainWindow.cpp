@@ -1,5 +1,5 @@
 #include <Windows.h>
-#include "string.h"
+#include <string>
 #include <vector>
 
 using namespace std;
@@ -10,7 +10,7 @@ HINSTANCE appInstance = 0;
 
 struct TextObj
 {
-	wstring s = L"";
+	basic_string<TCHAR> s = L"";
 	POINT p;
 };
 
@@ -97,14 +97,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR cmdLine, i
 	ShowWindow(mainWindow, showCmd);
 	UpdateWindow(mainWindow);
 
-	MSG msg;
-	ZeroMemory(&msg, sizeof(msg));
+	MSG message;
+	ZeroMemory(&message, sizeof(message));
 
-	while (GetMessage(&msg, 0, 0, 0))
+	while (GetMessage(&message, 0, 0, 0))
 	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+		TranslateMessage(&message);
+		DispatchMessage(&message);
 	}
 
-	return (int)msg.wParam;
+	return (int)message.wParam;
 }
