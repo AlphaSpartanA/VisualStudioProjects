@@ -41,7 +41,7 @@ LRESULT CALLBACK windowProcedure(HWND windowHandle, UINT message, WPARAM wParam,
 	case WM_PAINT:
 		hdc = BeginPaint(windowHandle, &ps);
 
-		for (int i = 0; i << gTextObjs.size(); ++i)
+		for (int i = 0; i < gTextObjs.size(); ++i)
 		{
 			TextOut(hdc, gTextObjs[i].p.x, gTextObjs[i].p.y, gTextObjs[i].s.c_str(), gTextObjs[i].s.size());
 		}
