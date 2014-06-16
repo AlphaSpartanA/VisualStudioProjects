@@ -31,7 +31,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="WindowsProgrammingSandbox.rc">
+    <ResourceCompile Include="WindowsProgrammingSandbox1.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

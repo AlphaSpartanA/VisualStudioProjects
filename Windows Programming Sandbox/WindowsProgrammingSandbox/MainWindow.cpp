@@ -1,8 +1,34 @@
 #include <Windows.h>
+#include <string>
+#include <vector>
+#include "resource.h"
+#include "Shape.h"
+using namespace std;
+//================================================================================================
+// Global Variables
 
-//stores handles to the main window and application instance globally
+const COLORREF BLACK = RGB(0, 0, 0);
+const COLORREF WHITE = RGB(255, 255, 255);
+const COLORREF RED = RGB(255, 0, 0);
+const COLORREF GREEN = RGB(0, 255, 0);
+const COLORREF BLUE = RGB(0, 0, 255);
+
 HWND mainWindow = 0;
 HINSTANCE appInstance = 0;
+HMENU ghMenu = LoadMenu(appInstance, MAKEINTRESOURCE(IDR_MENU1));
+vector<Shape*> gShapes;
+Shape* gShape = 0;
+
+bool gMouseDown = false;
+
+int gCurrPrim = ID_PRIMITIVE_LINE;
+int gCurrPenCol = ID_PENCOLOR_BLACK;
+int gCurrBrushCol = ID_BRUSHCOLOR_BLACK;
+int gCurrPenStyle = ID_PENSTYLE_SOLID;
+int gCurrBrushStyle = ID_BRUSHSTYLE_SOLID;
+
+LOGPEN gLogPen;
+LOGBRUSH gLogBrush;
 
 //Define the main window procedure
 LRESULT CALLBACK windowProcedure(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam) 
