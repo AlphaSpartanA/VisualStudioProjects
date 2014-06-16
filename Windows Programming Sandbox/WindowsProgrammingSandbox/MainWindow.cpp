@@ -34,7 +34,6 @@ LRESULT CALLBACK windowProcedure(HWND windowHandle, UINT message, WPARAM wParam,
 		GetObject(ghBitMap, sizeof(BITMAP), &bitmap);
 
 		bmWidth = bitmap.bmWidth;
-		cout << bitmap.bmWidth;
 		bmHeight = bitmap.bmHeight;
 
 		return 0;
